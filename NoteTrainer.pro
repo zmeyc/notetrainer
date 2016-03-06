@@ -16,9 +16,11 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     Utils/WidgetUtils.cpp \
     Controls/NoteSelector.cpp \
-    Data/Note.cpp
+    Data/Note.cpp \
+    Controls/NoteGuess.cpp
 
 HEADERS  += MainWindow.h \
     Utils/WidgetUtils.h \
     Controls/NoteSelector.h \
-    Data/Note.h
+    Data/Note.h \
+    Controls/NoteGuess.h

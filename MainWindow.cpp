@@ -2,23 +2,24 @@
 
 #include <QSplitter>
 #include <QLabel>
+#include <QDesktopWidget>
 #include "MainWindow.h"
 #include "Controls/NoteSelector.h"
-#include "Utils/WidgetUtils.h"
+#include "Controls/NoteGuess.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    //setGeometry(geometry().x(), geometry().y(), 800, 600);
+    resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
 
     QSplitter *splitter = new QSplitter;
+    splitter->setContentsMargins(10, 10, 10, 10);
 
     NoteSelector *noteSelector = new NoteSelector;
-    QLabel *play = new QLabel("Play");
-    WidgetUtils::setBackgroundColor(play, Qt::green);
+    NoteGuess *noteGuess = new NoteGuess;
 
     splitter->addWidget(noteSelector);
-    splitter->addWidget(play);
+    splitter->addWidget(noteGuess);
 
     setCentralWidget(splitter);
 }

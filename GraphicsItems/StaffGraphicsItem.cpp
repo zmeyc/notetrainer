@@ -1,6 +1,7 @@
 // NoteTrainer (c) 2016 Andrey Fidrya. MIT license. See LICENSE for more information.
 
 #include <QPainter>
+#include <QGraphicsScene>
 #include "StaffGraphicsItem.h"
 #include "NoteGraphicsItem.h"
 #include "Utils/Utils.h"
@@ -22,6 +23,16 @@ void StaffGraphicsItem::addNote(Note note, int octave)
     noteItem->setNote(note);
     noteItem->setParentItem(this);
     updateNotePositions();
+}
+
+void StaffGraphicsItem::removeAllNotes()
+{
+    foreach (QGraphicsItem *item, childItems()) {
+        NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
+        if (!noteItem)
+            continue;
+        scene()->removeItem(noteItem);
+    }
 }
 
 QRectF StaffGraphicsItem::boundingRect() const

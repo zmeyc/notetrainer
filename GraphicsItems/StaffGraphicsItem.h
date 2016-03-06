@@ -16,6 +16,7 @@ public:
     explicit StaffGraphicsItem(QGraphicsItem *parent = nullptr);
 
     void addNote(Note note, int octave);
+    void removeAllNotes();
 
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

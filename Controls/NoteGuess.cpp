@@ -38,5 +38,6 @@ void NoteGuess::initNoteView()
     noteView_->scene()->addItem(staff);
 
     staff->addNote(Note::C, 0);
+    staff->removeAllNotes();
     staff->addNote(Note::F, 0);
 }

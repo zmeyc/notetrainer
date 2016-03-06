@@ -23,5 +23,6 @@ enum class Note {
 };
 
 QString noteName(Note note);
+bool isFilled(Note note);
 
 #endif // NOTE_H

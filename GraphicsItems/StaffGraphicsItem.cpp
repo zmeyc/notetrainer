@@ -2,16 +2,26 @@
 
 #include <QPainter>
 #include "StaffGraphicsItem.h"
+#include "NoteGraphicsItem.h"
 #include "Utils/Utils.h"
 
 const int staffWidth = 200;
-const int octaveCount = 2;
-const int ledgerInterval = 15;
+const int octaveCount = 1;
+const int ledgerInterval = 20;
+const int octaveHeight = ledgerInterval * 3;
 
 StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
 {
     contentMargins_ = QMargins(10, 10, 10, 10);
+}
+
+void StaffGraphicsItem::addNote(Note note, int octave)
+{
+    NoteGraphicsItem *noteItem = new NoteGraphicsItem;
+    noteItem->setNote(note);
+    noteItem->setParentItem(this);
+    updateNotePositions();
 }
 
 QRectF StaffGraphicsItem::boundingRect() const
@@ -31,7 +41,7 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     QRectF rect = boundingRect();
     int leftX = rect.x() + contentMargins_.left();
     int rightX = rect.x() + rect.width() - contentMargins_.right();
-    int startY = rect.y() + contentMargins_.top() + ledgerInterval;;
+    int startY = rect.y() + contentMargins_.top() + ledgerInterval;
     int atY = startY;
     painter->save();
     painter->setPen(Qt::black);
@@ -55,4 +65,20 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
                       rightX,
                       atY - ledgerInterval * 2);
     painter->restore();
+}
+
+void StaffGraphicsItem::updateNotePositions()
+{
+    QRectF rect = boundingRect();
+
+    foreach (QGraphicsItem *item, childItems()) {
+        NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
+        if (!noteItem)
+            continue;
+        Note note = noteItem->note();
+        int spacePerNote = octaveHeight / 12;
+        int bottomY = rect.y() + contentMargins_.top() + octaveHeight;
+        int atY = bottomY - spacePerNote * (int)note;
+        noteItem->setPos(rect.center().x(), atY);
+    }
 }

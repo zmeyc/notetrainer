@@ -36,4 +36,7 @@ void NoteGuess::initNoteView()
 {
     StaffGraphicsItem *staff = new StaffGraphicsItem;
     noteView_->scene()->addItem(staff);
+
+    staff->addNote(Note::C, 0);
+    staff->addNote(Note::F, 0);
 }

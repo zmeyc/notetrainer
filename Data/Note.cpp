@@ -21,3 +21,19 @@ QString noteName(Note note)
     }
     return "?";
 }
+
+bool isFilled(Note note)
+{
+    switch (note) {
+    case Note::C:
+    case Note::D:
+    case Note::E:
+    case Note::Fis:
+    case Note::Aes:
+    case Note::Bes:
+        return true;
+    default:
+        break;
+    }
+    return false;
+}

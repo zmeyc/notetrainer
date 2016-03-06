@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/filledNote.png</file>
+        <file>Images/hollowNote.png</file>
+    </qresource>
+</RCC>

@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     Controls/NoteView.cpp \
     Models/NoteViewScene.cpp \
     GraphicsItems/StaffGraphicsItem.cpp \
-    Utils/Utils.cpp
+    Utils/Utils.cpp \
+    GraphicsItems/NoteGraphicsItem.cpp
 
 HEADERS  += MainWindow.h \
     Utils/WidgetUtils.h \
@@ -31,4 +32,8 @@ HEADERS  += MainWindow.h \
     Controls/NoteView.h \
     Models/NoteViewScene.h \
     GraphicsItems/StaffGraphicsItem.h \
-    Utils/Utils.h
+    Utils/Utils.h \
+    GraphicsItems/NoteGraphicsItem.h
+
+RESOURCES += \
+    NoteTrainer.qrc

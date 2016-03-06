@@ -1,0 +1,3 @@
+[submodule "ThirdParty/rtmidi"]
+	path = ThirdParty/rtmidi
+	url = https://github.com/zmeyc/rtmidi.git

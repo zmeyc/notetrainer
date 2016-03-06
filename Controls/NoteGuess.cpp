@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include "NoteGuess.h"
+#include "Controls/NoteView.h"
+#include "GraphicsItems/StaffGraphicsItem.h"
 
 NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 {
@@ -18,12 +20,20 @@ NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
     panelLayout->addStretch(1);
     panelLayout->addWidget(reset);
 
-    QLabel *staff = new QLabel("Staff");
+    noteView_ = new NoteView;
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(staff);
+    layout->addWidget(noteView_);
     layout->addLayout(panelLayout);
 
     setLayout(layout);
+
+    initNoteView();
+}
+
+void NoteGuess::initNoteView()
+{
+    StaffGraphicsItem *staff = new StaffGraphicsItem;
+    noteView_->scene()->addItem(staff);
 }

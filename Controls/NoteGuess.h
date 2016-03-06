@@ -5,6 +5,8 @@
 
 #include <QWidget>
 
+class NoteView;
+
 class NoteGuess : public QWidget
 {
     Q_OBJECT
@@ -14,6 +16,11 @@ public:
 signals:
 
 public slots:
+
+protected:
+    void initNoteView();
+
+    NoteView *noteView_ = nullptr;
 };
 
 #endif // NOTEGUESS_H

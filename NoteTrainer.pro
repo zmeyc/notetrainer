@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NoteTrainer
 TEMPLATE = app
 
+macx: {
+    DEFINES += __MACOSX_CORE__
+    LIBS += -framework CoreMIDI -framework CoreAudio -framework CoreFoundation
+}
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -22,7 +26,8 @@ SOURCES += main.cpp\
     Models/NoteViewScene.cpp \
     GraphicsItems/StaffGraphicsItem.cpp \
     Utils/Utils.cpp \
-    GraphicsItems/NoteGraphicsItem.cpp
+    GraphicsItems/NoteGraphicsItem.cpp \
+    ThirdParty/rtmidi/RtMidi.cpp
 
 HEADERS  += MainWindow.h \
     Utils/WidgetUtils.h \
@@ -33,7 +38,8 @@ HEADERS  += MainWindow.h \
     Models/NoteViewScene.h \
     GraphicsItems/StaffGraphicsItem.h \
     Utils/Utils.h \
-    GraphicsItems/NoteGraphicsItem.h
+    GraphicsItems/NoteGraphicsItem.h \
+    ThirdParty/rtmidi/RtMidi.h
 
 RESOURCES += \
     NoteTrainer.qrc

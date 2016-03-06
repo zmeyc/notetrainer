@@ -19,6 +19,7 @@ StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
 
 void StaffGraphicsItem::addNote(Note note, int octave)
 {
+    Q_UNUSED(octave);
     NoteGraphicsItem *noteItem = new NoteGraphicsItem;
     noteItem->setNote(note);
     noteItem->setParentItem(this);

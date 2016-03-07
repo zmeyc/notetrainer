@@ -41,6 +41,9 @@ void NoteGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QRectF rect = boundingRect();
     QImage image = noteImage();
     painter->drawImage(rect.translated(0, 0).topLeft(), image);
+    painter->drawText(rect.bottomRight().x() + 20,
+                      rect.bottomRight().y() - 3,
+                      noteName(note_));
 
 #if DEBUG_DRAW
     painter->save();

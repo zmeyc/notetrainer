@@ -68,7 +68,7 @@ void NoteGuess::onNoteOff(int key, int velocity)
     if (started_) {
         if (noteToGuess_ == note) {
             correctNotePressed();
-            randomizeNextNote();
+            randomizeNextNote(false);
         } else {
             wrongNotePressed();
         }
@@ -92,15 +92,20 @@ void NoteGuess::initNoteView()
     //    staff->addNote(Note::F, 0);
 }
 
-void NoteGuess::randomizeNextNote()
+void NoteGuess::randomizeNextNote(bool allowRepeats)
 {
     staff_->removeAllNotes();
 
-    if (notes_.isEmpty())
-        return;
-    Note note = notes_.toList().at(qrand() % notes_.size());
-    staff_->addNote(note, 0);
+    QSet<Note> t = notes_;
+    if (!allowRepeats)
+        t.remove(noteToGuess_);
 
+    if (t.isEmpty())
+        return;
+
+    Note note = notes_.toList().at(qrand() % notes_.size());
+
+    staff_->addNote(note, 0);
     noteToGuess_ = note;
 }
 
@@ -122,6 +127,6 @@ void NoteGuess::start()
 {
     correctLineEdit_->setText("0");
     wrongLineEdit_->setText("0");
-    randomizeNextNote();
+    randomizeNextNote(true);
     started_ = true;
 }

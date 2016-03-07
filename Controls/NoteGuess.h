@@ -33,7 +33,7 @@ protected slots:
 
 protected:
     void initNoteView();
-    void randomizeNextNote();
+    void randomizeNextNote(bool allowRepeats);
     void correctNotePressed();
     void wrongNotePressed();
 

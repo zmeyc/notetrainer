@@ -2,7 +2,7 @@
 #include "NoteGraphicsItem.h"
 #include "Utils/Utils.h"
 
-#define DEBUG_DRAW 1
+#define DEBUG_DRAW 0
 
 NoteGraphicsItem::NoteGraphicsItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)

@@ -17,11 +17,13 @@ MainWindow::MainWindow(QWidget *parent)
     QSplitter *splitter = new QSplitter;
     splitter->setContentsMargins(10, 10, 10, 10);
 
-    NoteSelector *noteSelector = new NoteSelector;
-    NoteGuess *noteGuess = new NoteGuess;
+    noteSelector_ = new NoteSelector;
+    noteGuess_ = new NoteGuess;
+    connect(noteGuess_, SIGNAL(reset()),
+            this, SLOT(onReset()));
 
-    splitter->addWidget(noteSelector);
-    splitter->addWidget(noteGuess);
+    splitter->addWidget(noteSelector_);
+    splitter->addWidget(noteGuess_);
 
     setCentralWidget(splitter);
 
@@ -36,8 +38,17 @@ MainWindow::MainWindow(QWidget *parent)
                               tr("Unable to open MIDI port: ") +
                               reader->lastErrorMessage());
     }
+
+    onReset();
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::onReset()
+{
+    QSet<Note> notes = noteSelector_->notes();
+    noteGuess_->setNotes(notes);
+    noteGuess_->start();
 }

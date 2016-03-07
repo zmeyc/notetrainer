@@ -1,5 +1,6 @@
 // NoteTrainer (c) 2016 Andrey Fidrya. MIT license. See LICENSE for more information.
 
+#include <QHashFunctions>
 #include "Note.h"
 #include "Utils/Utils.h"
 
@@ -53,4 +54,9 @@ Note noteFromKey(int key)
     //int octave = 4 + deltaKey / 12;
 
     return (Note)note;
+}
+
+uint qHash(Note note)
+{
+    return ::qHash((int)note);
 }

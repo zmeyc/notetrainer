@@ -5,6 +5,9 @@
 
 #include <QMainWindow>
 
+class NoteSelector;
+class NoteGuess;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -12,6 +15,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+protected slots:
+    void onReset();
+
+protected:
+    NoteSelector *noteSelector_ = nullptr;
+    NoteGuess *noteGuess_ = nullptr;
 };
 
 #endif // MAINWINDOW_H

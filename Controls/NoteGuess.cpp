@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QLineEdit>
 #include "NoteGuess.h"
 #include "Controls/NoteView.h"
 #include "GraphicsItems/StaffGraphicsItem.h"
@@ -11,13 +12,21 @@
 
 NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 {
-    QLabel *correct = new QLabel("Correct");
-    QLabel *wrong = new QLabel("Wrong");
-    QPushButton *reset = new QPushButton("Reset");
+    QLabel *correctLabel = new QLabel(tr("Correct"));
+    correctLineEdit_ = new QLineEdit();
+    correctLineEdit_->setReadOnly(true);
+    QLabel *wrongLabel = new QLabel(tr("Wrong"));
+    wrongLineEdit_ = new QLineEdit();
+    wrongLineEdit_->setReadOnly(true);
+    QPushButton *reset = new QPushButton(tr("Reset"));
+    connect(reset, SIGNAL(clicked(bool)),
+            this, SIGNAL(reset()));
 
     QHBoxLayout *panelLayout = new QHBoxLayout;
-    panelLayout->addWidget(correct);
-    panelLayout->addWidget(wrong);
+    panelLayout->addWidget(correctLabel);
+    panelLayout->addWidget(correctLineEdit_);
+    panelLayout->addWidget(wrongLabel);
+    panelLayout->addWidget(wrongLineEdit_);
     panelLayout->addStretch(1);
     panelLayout->addWidget(reset);
 
@@ -33,6 +42,16 @@ NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
     initNoteView();
 }
 
+QSet<Note> NoteGuess::notes() const
+{
+    return notes_;
+}
+
+void NoteGuess::setNotes(const QSet<Note> &notes)
+{
+    notes_ = notes;
+}
+
 void NoteGuess::onNoteOn(int key, int velocity)
 {
     Q_UNUSED(velocity);
@@ -45,6 +64,15 @@ void NoteGuess::onNoteOff(int key, int velocity)
     Q_UNUSED(velocity);
     Note note = noteFromKey(key);
     staff_->removeNote(note, 0);
+
+    if (started_) {
+        if (noteToGuess_ == note) {
+            correctNotePressed();
+            randomizeNextNote();
+        } else {
+            wrongNotePressed();
+        }
+    }
 }
 
 void NoteGuess::initNoteView()
@@ -61,5 +89,39 @@ void NoteGuess::initNoteView()
 
 //    staff->addNote(Note::C, 0);
 //    staff->removeAllNotes();
-//    staff->addNote(Note::F, 0);
+    //    staff->addNote(Note::F, 0);
+}
+
+void NoteGuess::randomizeNextNote()
+{
+    staff_->removeAllNotes();
+
+    if (notes_.isEmpty())
+        return;
+    Note note = notes_.toList().at(qrand() % notes_.size());
+    staff_->addNote(note, 0);
+
+    noteToGuess_ = note;
+}
+
+void NoteGuess::correctNotePressed()
+{
+    int correct = correctLineEdit_->text().toInt();
+    ++correct;
+    correctLineEdit_->setText(QString::number(correct));
+}
+
+void NoteGuess::wrongNotePressed()
+{
+    int wrong = wrongLineEdit_->text().toInt();
+    ++wrong;
+    wrongLineEdit_->setText(QString::number(wrong));
+}
+
+void NoteGuess::start()
+{
+    correctLineEdit_->setText("0");
+    wrongLineEdit_->setText("0");
+    randomizeNextNote();
+    started_ = true;
 }

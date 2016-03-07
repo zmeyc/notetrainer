@@ -4,6 +4,11 @@
 #define NOTESELECTOR_H
 
 #include <QWidget>
+#include <QSet>
+#include <QMap>
+#include "Data/Note.h"
+
+class QCheckBox;
 
 class NoteSelector : public QWidget
 {
@@ -11,9 +16,14 @@ class NoteSelector : public QWidget
 public:
     explicit NoteSelector(QWidget *parent = 0);
 
+    QSet<Note> notes() const;
+
 signals:
 
 public slots:
+
+protected:
+    QMap<int, QCheckBox *> checkBoxes_;
 };
 
 #endif // NOTESELECTOR_H

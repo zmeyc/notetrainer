@@ -77,6 +77,10 @@ void MidiReader::onMidiMessage(double deltaTime,
                                std::vector<unsigned char> *message)
 {
     size_t bytesCount = message->size();
+
+    if (bytesCount == 1 && message->at(0) == 254)
+        return; // Skip 'Active sense' bytes
+
     for (size_t i = 0; i < bytesCount; ++i)
         qdbg << "Byte " << i << " = " << (int)message->at(i) << ", ";
     if (bytesCount > 0)

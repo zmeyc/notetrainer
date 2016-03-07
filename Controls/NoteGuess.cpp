@@ -103,7 +103,7 @@ void NoteGuess::randomizeNextNote(bool allowRepeats)
     if (t.isEmpty())
         return;
 
-    Note note = notes_.toList().at(qrand() % notes_.size());
+    Note note = t.toList().at(qrand() % t.size());
 
     staff_->addNote(note, 0);
     noteToGuess_ = note;

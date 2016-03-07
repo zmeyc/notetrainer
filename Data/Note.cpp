@@ -1,6 +1,7 @@
 // NoteTrainer (c) 2016 Andrey Fidrya. MIT license. See LICENSE for more information.
 
 #include "Note.h"
+#include "Utils/Utils.h"
 
 QString noteName(Note note)
 {
@@ -47,6 +48,7 @@ Note noteFromKey(int key)
         note = deltaKey % 12;
     } else {
         note = 12 + deltaKey % 12;
+        note %= 12;
     }
     //int octave = 4 + deltaKey / 12;
 

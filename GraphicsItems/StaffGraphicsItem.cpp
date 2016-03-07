@@ -71,14 +71,20 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->setPen(Qt::black);
 
     for (int octave = 0; octave < octaveCount; ++octave) {
-        for (int ledger = 0; ledger < 2; ++ledger) {
-            painter->drawLine(leftX,
-                              atY,
-                              rightX,
-                              atY);
+        for (int ledger = 0; ledger < 3; ++ledger) {
+            if (ledger < 2) {
+                painter->drawLine(leftX,
+                                  atY,
+                                  rightX,
+                                  atY);
+            } else {
+                painter->drawLine(rect.center().x() - 20,
+                                  atY,
+                                  rect.center().x() + 20,
+                                  atY);
+            }
             atY += ledgerInterval;
         }
-        atY += ledgerInterval;
     }
     painter->drawLine(leftX,
                       startY,

@@ -7,6 +7,7 @@
 #include "NoteGuess.h"
 #include "Controls/NoteView.h"
 #include "GraphicsItems/StaffGraphicsItem.h"
+#include "Controllers/MidiReader.h"
 
 NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 {
@@ -32,12 +33,33 @@ NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
     initNoteView();
 }
 
+void NoteGuess::onNoteOn(int key, int velocity)
+{
+    Q_UNUSED(velocity);
+    Note note = noteFromKey(key);
+    staff_->addNote(note, 0);
+}
+
+void NoteGuess::onNoteOff(int key, int velocity)
+{
+    Q_UNUSED(velocity);
+    Note note = noteFromKey(key);
+    staff_->removeNote(note, 0);
+}
+
 void NoteGuess::initNoteView()
 {
-    StaffGraphicsItem *staff = new StaffGraphicsItem;
-    noteView_->scene()->addItem(staff);
+    MidiReader *reader = MidiReader::sharedInstance();
 
-    staff->addNote(Note::C, 0);
-    staff->removeAllNotes();
-    staff->addNote(Note::F, 0);
+    staff_ = new StaffGraphicsItem;
+    connect(reader, SIGNAL(noteOn(int,int)),
+            this, SLOT(onNoteOn(int,int)));
+    connect(reader, SIGNAL(noteOff(int,int)),
+            this, SLOT(onNoteOff(int,int)));
+
+    noteView_->scene()->addItem(staff_);
+
+//    staff->addNote(Note::C, 0);
+//    staff->removeAllNotes();
+//    staff->addNote(Note::F, 0);
 }

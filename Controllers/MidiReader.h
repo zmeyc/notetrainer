@@ -4,15 +4,17 @@
 #define MIDIREADER_H
 
 #include <vector>
+#include <QObject>
 #include <QString>
 #include <QSharedPointer>
 
 class RtMidiIn;
 
-class MidiReader
+class MidiReader: public QObject
 {
+    Q_OBJECT
 public:
-    MidiReader();
+    MidiReader(QObject *parent = nullptr);
 
     static MidiReader *sharedInstance();
 
@@ -21,6 +23,10 @@ public:
 
     QString lastErrorMessage() const;
     void setLastErrorMessage(const QString &lastErrorMessage);
+
+signals:
+    void noteOn(int key, int velocity);
+    void noteOff(int key, int velocity);
 
 protected:
     void onMidiMessage(double deltaTime,

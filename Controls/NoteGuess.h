@@ -6,6 +6,7 @@
 #include <QWidget>
 
 class NoteView;
+class StaffGraphicsItem;
 
 class NoteGuess : public QWidget
 {
@@ -17,10 +18,15 @@ signals:
 
 public slots:
 
+protected slots:
+    void onNoteOn(int key, int velocity);
+    void onNoteOff(int key, int velocity);
+
 protected:
     void initNoteView();
 
     NoteView *noteView_ = nullptr;
+    StaffGraphicsItem *staff_ = nullptr;
 };
 
 #endif // NOTEGUESS_H

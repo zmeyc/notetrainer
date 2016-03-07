@@ -5,7 +5,8 @@
 #include "ThirdParty/rtmidi/RtMidi.h"
 #include "Utils/Utils.h"
 
-MidiReader::MidiReader()
+MidiReader::MidiReader(QObject *parent)
+    : QObject(parent)
 {
 
 }
@@ -80,6 +81,28 @@ void MidiReader::onMidiMessage(double deltaTime,
         qdbg << "Byte " << i << " = " << (int)message->at(i) << ", ";
     if (bytesCount > 0)
         qdbg << "stamp = " << deltaTime << endl;
+
+    if (bytesCount >= 3) {
+        quint8 byte1 = (*message)[0];
+        int channel = byte1 & 0b1111;
+        int cmd = byte1 >> 4;
+        qdbg << "[Channel " << channel << "] ";
+        if (cmd == 0b1000) {
+            // Note Off
+            int key = (*message)[1];
+            int velocity = (*message)[2];
+            qdbg << "Note off: key=" << key << ", velocity=" << velocity;
+            emit noteOff(key, velocity);
+        } else if (cmd == 0b1001) {
+            // Note On
+            int key = (*message)[1];
+            int velocity = (*message)[2];
+            qdbg << "Note on: key=" << key << ", velocity=" << velocity;
+            emit noteOn(key, velocity);
+        }
+        qdbg << endl;
+    }
+
 }
 
 void MidiReader::onMidiMessageCB(double deltaTime,

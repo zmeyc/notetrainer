@@ -24,5 +24,6 @@ enum class Note {
 
 QString noteName(Note note);
 bool isFilled(Note note);
+Note noteFromKey(int key);
 
 #endif // NOTE_H

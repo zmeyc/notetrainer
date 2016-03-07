@@ -37,3 +37,18 @@ bool isFilled(Note note)
     }
     return false;
 }
+
+Note noteFromKey(int key)
+{
+    int c4key = 60;
+    int deltaKey = key - c4key;
+    int note = 0;
+    if (deltaKey >= 0) {
+        note = deltaKey % 12;
+    } else {
+        note = 12 + deltaKey % 12;
+    }
+    //int octave = 4 + deltaKey / 12;
+
+    return (Note)note;
+}

@@ -26,6 +26,18 @@ void StaffGraphicsItem::addNote(Note note, int octave)
     updateNotePositions();
 }
 
+void StaffGraphicsItem::removeNote(Note note, int octave)
+{
+    Q_UNUSED(octave);
+    foreach (QGraphicsItem *item, childItems()) {
+        NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
+        if (!noteItem)
+            continue;
+        if (noteItem->note() == note)
+            scene()->removeItem(noteItem);
+    }
+}
+
 void StaffGraphicsItem::removeAllNotes()
 {
     foreach (QGraphicsItem *item, childItems()) {

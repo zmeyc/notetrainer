@@ -27,17 +27,13 @@ void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
 
 void StaffGraphicsItem::addNote(const Note &note)
 {
+    if (fromOctave_ > note.octave())
+        return;
+    if (toOctave_ < note.octave())
+        return;
     NoteGraphicsItem *noteItem = new NoteGraphicsItem;
     noteItem->setNote(note);
     noteItem->setParentItem(this);
-    if (fromOctave_ > note.octave()) {
-        fromOctave_ = note.octave();
-        update();
-    }
-    if (toOctave_ < note.octave()) {
-        toOctave_ = note.octave();
-        update();
-    }
     updateNotePositions();
 }
 
@@ -116,14 +112,16 @@ void StaffGraphicsItem::updateNotePositions()
 {
     QRectF rect = boundingRect();
 
+    int octaveCount = toOctave_ - fromOctave_ + 1;
     foreach (QGraphicsItem *item, childItems()) {
         NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
         if (!noteItem)
             continue;
         Note note = noteItem->note();
         int spacePerNote = octaveHeight / 12;
-        int octaveIndex = note.octave() - fromOctave_;
-        int bottomY = rect.y() + contentMargins_.top() + (octaveIndex + 1) * octaveHeight;
+        int octaveIndex = octaveCount - (note.octave() - fromOctave_) - 1;
+        int bottomY = rect.y() + contentMargins_.top() +
+                (octaveIndex + 1) * octaveHeight;
         int atY = bottomY - spacePerNote * (int)note.pitch();
         noteItem->setPos(rect.center().x(), atY);
     }

@@ -10,6 +10,7 @@
 #include "Controls/NoteView.h"
 #include "GraphicsItems/StaffGraphicsItem.h"
 #include "Controllers/MidiReader.h"
+#include "Utils/Utils.h"
 
 NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 {

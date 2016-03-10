@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QTimer>
 #include "NoteGuess.h"
 #include "Controls/NoteView.h"
 #include "GraphicsItems/StaffGraphicsItem.h"
@@ -39,7 +40,7 @@ NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 
     setLayout(layout);
 
-    initNoteView();
+    QTimer::singleShot(0, this, SLOT(initNoteView()));
 }
 
 QSet<Note> NoteGuess::notes() const
@@ -50,19 +51,43 @@ QSet<Note> NoteGuess::notes() const
 void NoteGuess::setNotes(const QSet<Note> &notes)
 {
     notes_ = notes;
-    if (notes.empty()) {
-        fromOctave_ = toOctave_ = 4;
-        return;
-    } else {
-        fromOctave_ = INT_MAX;
-        toOctave_ = INT_MIN;
-        foreach (const Note &note, notes) {
-            if (note.octave() < fromOctave_)
-                fromOctave_ = note.octave();
-            if (note.octave() > toOctave_)
-                toOctave_ = note.octave();
-        }
-    }
+//    if (notes.empty()) {
+//        fromOctave_ = toOctave_ = 4;
+//        return;
+//    } else {
+//        fromOctave_ = INT_MAX;
+//        toOctave_ = INT_MIN;
+//        foreach (const Note &note, notes) {
+//            if (note.octave() < fromOctave_)
+//                fromOctave_ = note.octave();
+//            if (note.octave() > toOctave_)
+//                toOctave_ = note.octave();
+//        }
+//    }
+}
+
+int NoteGuess::octaveFrom() const
+{
+    return octaveFrom_;
+}
+
+void NoteGuess::setOctaveFrom(int octaveFrom)
+{
+    if (octaveFrom_ != octaveFrom)
+        update();
+    octaveFrom_ = octaveFrom;
+}
+
+int NoteGuess::octaveTo() const
+{
+    return octaveTo_;
+}
+
+void NoteGuess::setOctaveTo(int octaveTo)
+{
+    if (octaveTo_ != octaveTo)
+        update();
+    octaveTo_ = octaveTo;
 }
 
 void NoteGuess::onNoteOn(int key, int velocity)
@@ -140,7 +165,7 @@ void NoteGuess::start()
 {
     correctLineEdit_->setText("0");
     wrongLineEdit_->setText("0");
-    staff_->setOctaveRange(fromOctave_, toOctave_);
+    staff_->setOctaveRange(octaveFrom_, octaveTo_);
     randomizeNextNote(true);
     started_ = true;
 }

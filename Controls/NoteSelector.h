@@ -21,6 +21,10 @@ public:
 
     QSet<Note> notes() const;
 
+    int octaveFrom() const;
+
+    int octaveTo() const;
+
 signals:
 
 public slots:

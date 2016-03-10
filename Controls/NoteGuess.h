@@ -20,6 +20,12 @@ public:
     QSet<Note> notes() const;
     void setNotes(const QSet<Note> &notes);
 
+    int octaveFrom() const;
+    void setOctaveFrom(int octaveFrom);
+
+    int octaveTo() const;
+    void setOctaveTo(int octaveTo);
+
     void start();
 
 signals:
@@ -32,7 +38,7 @@ protected slots:
     void onNoteOff(int key, int velocity);
 
 protected:
-    void initNoteView();
+    Q_SLOT void initNoteView();
     void randomizeNextNote(bool allowRepeats);
     void correctNotePressed();
     void wrongNotePressed();
@@ -42,8 +48,8 @@ protected:
     NoteView *noteView_ = nullptr;
     StaffGraphicsItem *staff_ = nullptr;
     QSet<Note> notes_;
-    int fromOctave_ = 0;
-    int toOctave_ = 0;
+    int octaveFrom_ = 0;
+    int octaveTo_ = 0;
 
     bool started_ = false;
     Note noteToGuess_;

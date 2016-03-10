@@ -49,6 +49,8 @@ MainWindow::~MainWindow()
 void MainWindow::onReset()
 {
     QSet<Note> notes = noteSelector_->notes();
+    noteGuess_->setOctaveFrom(noteSelector_->octaveFrom());
+    noteGuess_->setOctaveTo(noteSelector_->octaveTo());
     noteGuess_->setNotes(notes);
     noteGuess_->start();
 }

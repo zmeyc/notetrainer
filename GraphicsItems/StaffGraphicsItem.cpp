@@ -18,15 +18,11 @@ StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
 
 void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
 {
-    bool needsUpdate = false;
     if (fromOctave_ != fromOctave || toOctave_ != toOctave)
-        needsUpdate = true;
+        update();
 
     fromOctave_ = fromOctave;
     toOctave_ = toOctave;
-
-    if (needsUpdate)
-        update();
 }
 
 void StaffGraphicsItem::addNote(const Note &note)
@@ -126,7 +122,8 @@ void StaffGraphicsItem::updateNotePositions()
             continue;
         Note note = noteItem->note();
         int spacePerNote = octaveHeight / 12;
-        int bottomY = rect.y() + contentMargins_.top() + octaveHeight;
+        int octaveIndex = note.octave() - fromOctave_;
+        int bottomY = rect.y() + contentMargins_.top() + (octaveIndex + 1) * octaveHeight;
         int atY = bottomY - spacePerNote * (int)note.pitch();
         noteItem->setPos(rect.center().x(), atY);
     }

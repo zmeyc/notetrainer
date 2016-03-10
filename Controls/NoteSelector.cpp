@@ -105,6 +105,16 @@ void NoteSelector::updateCheckboxes()
     checkBoxesLayout_->setColumnStretch(octaveTo_ + 1, 1);
 }
 
+int NoteSelector::octaveTo() const
+{
+    return octaveTo_;
+}
+
+int NoteSelector::octaveFrom() const
+{
+    return octaveFrom_;
+}
+
 void NoteSelector::onOctaveFromChanged(int octave)
 {
     Q_UNUSED(octave);

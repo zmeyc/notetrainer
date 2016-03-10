@@ -8,7 +8,10 @@
 #include <QMap>
 #include "Data/Note.h"
 
+class QGridLayout;
 class QCheckBox;
+class QSpinBox;
+class QLabel;
 
 class NoteSelector : public QWidget
 {
@@ -22,8 +25,24 @@ signals:
 
 public slots:
 
+protected slots:
+    void onOctaveFromChanged(int octave);
+    void onOctaveToChanged(int octave);
+
 protected:
-    QMap<int, QCheckBox *> checkBoxes_;
+    using OctaveCheckBoxes = QMap<int, QCheckBox *>;
+
+    void updateOctaves();
+    void updateCheckboxes();
+
+    QGridLayout *checkBoxesLayout_ = nullptr;
+    QSpinBox *octaveFromCheckBox_ = nullptr;
+    QSpinBox *octaveToCheckBox_ = nullptr;
+    QLabel *octavesLabel_ = nullptr;
+    QMap<int, OctaveCheckBoxes> checkBoxes_;
+    int octaveFrom_ = 0;
+    int octaveTo_ = 0;
+    int octaveCount_ = 0;
 };
 
 #endif // NOTESELECTOR_H

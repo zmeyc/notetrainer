@@ -7,7 +7,6 @@
 #include "Utils/Utils.h"
 
 const int staffWidth = 200;
-const int octaveCount = 1;
 const int ledgerInterval = 20;
 const int octaveHeight = ledgerInterval * 3;
 
@@ -17,11 +16,32 @@ StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
     contentMargins_ = QMargins(10, 10, 10, 10);
 }
 
+void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
+{
+    bool needsUpdate = false;
+    if (fromOctave_ != fromOctave || toOctave_ != toOctave)
+        needsUpdate = true;
+
+    fromOctave_ = fromOctave;
+    toOctave_ = toOctave;
+
+    if (needsUpdate)
+        update();
+}
+
 void StaffGraphicsItem::addNote(const Note &note)
 {
     NoteGraphicsItem *noteItem = new NoteGraphicsItem;
     noteItem->setNote(note);
     noteItem->setParentItem(this);
+    if (fromOctave_ > note.octave()) {
+        fromOctave_ = note.octave();
+        update();
+    }
+    if (toOctave_ < note.octave()) {
+        toOctave_ = note.octave();
+        update();
+    }
     updateNotePositions();
 }
 
@@ -50,6 +70,7 @@ QRectF StaffGraphicsItem::boundingRect() const
 {
     QSize size;
     size.setWidth(staffWidth);
+    int octaveCount = toOctave_ - fromOctave_ + 1;
     size.setHeight(octaveCount * ledgerInterval * 3);
     return QRectF(-size.width() / 2, -size.height() / 2,
                   size.width(), size.height()).marginsAdded(contentMargins_);
@@ -68,7 +89,7 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->save();
     painter->setPen(Qt::black);
 
-    for (int octave = 0; octave < octaveCount; ++octave) {
+    for (int octave = fromOctave_; octave <= toOctave_; ++octave) {
         for (int ledger = 0; ledger < 3; ++ledger) {
             if (ledger < 2) {
                 painter->drawLine(leftX,

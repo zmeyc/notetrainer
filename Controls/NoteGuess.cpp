@@ -50,6 +50,19 @@ QSet<Note> NoteGuess::notes() const
 void NoteGuess::setNotes(const QSet<Note> &notes)
 {
     notes_ = notes;
+    if (notes.empty()) {
+        fromOctave_ = toOctave_ = 4;
+        return;
+    } else {
+        fromOctave_ = INT_MAX;
+        toOctave_ = INT_MIN;
+        foreach (const Note &note, notes) {
+            if (note.octave() < fromOctave_)
+                fromOctave_ = note.octave();
+            if (note.octave() > toOctave_)
+                toOctave_ = note.octave();
+        }
+    }
 }
 
 void NoteGuess::onNoteOn(int key, int velocity)
@@ -127,6 +140,7 @@ void NoteGuess::start()
 {
     correctLineEdit_->setText("0");
     wrongLineEdit_->setText("0");
+    staff_->setOctaveRange(fromOctave_, toOctave_);
     randomizeNextNote(true);
     started_ = true;
 }

@@ -15,6 +15,7 @@ class StaffGraphicsItem: public QObject, public QGraphicsItem
 public:
     explicit StaffGraphicsItem(QGraphicsItem *parent = nullptr);
 
+    void setOctaveRange(int fromOctave, int toOctave);
     void addNote(const Note &note);
     void removeNote(const Note &note);
     void removeAllNotes();
@@ -30,6 +31,8 @@ protected:
     void updateNotePositions();
 
     QMargins contentMargins_;
+    int fromOctave_ = 0;
+    int toOctave_ = 0;
 };
 
 #endif // STAFFGRAPHICSITEM_H

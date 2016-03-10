@@ -42,6 +42,8 @@ protected:
     NoteView *noteView_ = nullptr;
     StaffGraphicsItem *staff_ = nullptr;
     QSet<Note> notes_;
+    int fromOctave_ = 0;
+    int toOctave_ = 0;
 
     bool started_ = false;
     Note noteToGuess_;

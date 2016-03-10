@@ -44,7 +44,7 @@ protected:
     QSet<Note> notes_;
 
     bool started_ = false;
-    Note noteToGuess_ = Note::C;
+    Note noteToGuess_;
 };
 
 #endif // NOTEGUESS_H

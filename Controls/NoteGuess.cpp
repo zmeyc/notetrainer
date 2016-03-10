@@ -55,15 +55,15 @@ void NoteGuess::setNotes(const QSet<Note> &notes)
 void NoteGuess::onNoteOn(int key, int velocity)
 {
     Q_UNUSED(velocity);
-    Note note = noteFromKey(key);
-    staff_->addNote(note, 0);
+    Note note = Note::noteFromKey(key);
+    staff_->addNote(note);
 }
 
 void NoteGuess::onNoteOff(int key, int velocity)
 {
     Q_UNUSED(velocity);
-    Note note = noteFromKey(key);
-    staff_->removeNote(note, 0);
+    Note note = Note::noteFromKey(key);
+    staff_->removeNote(note);
 
     if (started_) {
         if (noteToGuess_ == note) {
@@ -105,7 +105,7 @@ void NoteGuess::randomizeNextNote(bool allowRepeats)
 
     Note note = t.toList().at(qrand() % t.size());
 
-    staff_->addNote(note, 0);
+    staff_->addNote(note);
     noteToGuess_ = note;
 }
 

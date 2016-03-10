@@ -17,18 +17,16 @@ StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
     contentMargins_ = QMargins(10, 10, 10, 10);
 }
 
-void StaffGraphicsItem::addNote(Note note, int octave)
+void StaffGraphicsItem::addNote(const Note &note)
 {
-    Q_UNUSED(octave);
     NoteGraphicsItem *noteItem = new NoteGraphicsItem;
     noteItem->setNote(note);
     noteItem->setParentItem(this);
     updateNotePositions();
 }
 
-void StaffGraphicsItem::removeNote(Note note, int octave)
+void StaffGraphicsItem::removeNote(const Note &note)
 {
-    Q_UNUSED(octave);
     foreach (QGraphicsItem *item, childItems()) {
         NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
         if (!noteItem)
@@ -108,7 +106,7 @@ void StaffGraphicsItem::updateNotePositions()
         Note note = noteItem->note();
         int spacePerNote = octaveHeight / 12;
         int bottomY = rect.y() + contentMargins_.top() + octaveHeight;
-        int atY = bottomY - spacePerNote * (int)note;
+        int atY = bottomY - spacePerNote * (int)note.pitch();
         noteItem->setPos(rect.center().x(), atY);
     }
 }

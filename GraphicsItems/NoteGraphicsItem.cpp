@@ -43,7 +43,7 @@ void NoteGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawImage(rect.translated(0, 0).topLeft(), image);
     painter->drawText(rect.bottomRight().x() + 20,
                       rect.bottomRight().y() - 3,
-                      noteName(note_));
+                      note_.pitchName());
 
 #if DEBUG_DRAW
     painter->save();
@@ -56,7 +56,7 @@ void NoteGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 QImage NoteGraphicsItem::noteImage() const
 {
     QImage image;
-    if (isFilled(note_))
+    if (note_.isFilled())
         image = filledNoteImage_;
     else
         image = hollowNoteImage_;

@@ -15,8 +15,8 @@ class StaffGraphicsItem: public QObject, public QGraphicsItem
 public:
     explicit StaffGraphicsItem(QGraphicsItem *parent = nullptr);
 
-    void addNote(Note note, int octave);
-    void removeNote(Note note, int octave);
+    void addNote(const Note &note);
+    void removeNote(const Note &note);
     void removeAllNotes();
 
     QRectF boundingRect() const override;

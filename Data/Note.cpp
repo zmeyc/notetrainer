@@ -4,35 +4,55 @@
 #include "Note.h"
 #include "Utils/Utils.h"
 
-QString noteName(Note note)
+Note::Note(Note::Pitch pitch, int octave)
+    : pitch_(pitch)
+    , octave_(octave)
 {
-    switch (note) {
-    case Note::C:   return "do";
-    case Note::Cis: return "di";
-    case Note::D:   return "re";
-    case Note::Ees: return "me";
-    case Note::E:   return "mi";
-    case Note::F:   return "fa";
-    case Note::Fis: return "fi";
-    case Note::G:   return "so";
-    case Note::Aes: return "lu";
-    case Note::A:   return "la";
-    case Note::Bes: return "se";
-    case Note::B:   return "si";
+
+}
+
+Note Note::noteFromKey(int key)
+{
+    Note note;
+    note.setPitch((Note::Pitch)(key % 12));
+    note.setOctave(-1 + key / 12);
+    return note;
+}
+
+QString Note::pitchName(Note::Pitch pitch)
+{
+    switch (pitch) {
+    case Pitch::C:   return "do";
+    case Pitch::Cis: return "di";
+    case Pitch::D:   return "re";
+    case Pitch::Ees: return "me";
+    case Pitch::E:   return "mi";
+    case Pitch::F:   return "fa";
+    case Pitch::Fis: return "fi";
+    case Pitch::G:   return "so";
+    case Pitch::Aes: return "lu";
+    case Pitch::A:   return "la";
+    case Pitch::Bes: return "se";
+    case Pitch::B:   return "si";
     default: break;
     }
     return "?";
 }
 
-bool isFilled(Note note)
+QString Note::pitchName() const
 {
-    switch (note) {
-    case Note::C:
-    case Note::D:
-    case Note::E:
-    case Note::Fis:
-    case Note::Aes:
-    case Note::Bes:
+    return pitchName(pitch_);
+}
+
+bool Note::isFilled() const
+{
+    switch (pitch_) {
+    case Pitch::C:
+    case Pitch::D:
+    case Pitch::E:
+    case Pitch::Fis:
+    case Pitch::Aes:
+    case Pitch::Bes:
         return true;
     default:
         break;
@@ -40,23 +60,33 @@ bool isFilled(Note note)
     return false;
 }
 
-Note noteFromKey(int key)
+Note::Pitch Note::pitch() const
 {
-    int c4key = 60;
-    int deltaKey = key - c4key;
-    int note = 0;
-    if (deltaKey >= 0) {
-        note = deltaKey % 12;
-    } else {
-        note = 12 + deltaKey % 12;
-        note %= 12;
-    }
-    //int octave = 4 + deltaKey / 12;
+    return pitch_;
+}
 
-    return (Note)note;
+void Note::setPitch(const Pitch &pitch)
+{
+    pitch_ = pitch;
+}
+
+int Note::octave() const
+{
+    return octave_;
+}
+
+void Note::setOctave(int octave)
+{
+    octave_ = octave;
+}
+
+bool Note::operator==(const Note &other) const
+{
+    return pitch_ == other.pitch_ && octave_ == other.octave_;
 }
 
 uint qHash(Note note)
 {
-    return ::qHash((int)note);
+    return ::qHash((int)note.pitch()) ^ ::qHash(note.octave());
 }
+

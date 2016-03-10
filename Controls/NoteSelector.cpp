@@ -12,8 +12,8 @@ NoteSelector::NoteSelector(QWidget *parent) : QWidget(parent)
     layout->setContentsMargins(0, 0, 0, 0);
 
     layout->addStretch(1);
-    for (int i = 0; i < (int) Note::Count; ++i) {
-        QCheckBox *checkBox = new QCheckBox(noteName((Note)i));
+    for (int i = 0; i < (int) Note::Pitch::Count; ++i) {
+        QCheckBox *checkBox = new QCheckBox(Note::pitchName((Note::Pitch)i));
         checkBox->setChecked(true);
         checkBox->setProperty("note", i);
         layout->addWidget(checkBox);
@@ -28,9 +28,9 @@ NoteSelector::NoteSelector(QWidget *parent) : QWidget(parent)
 QSet<Note> NoteSelector::notes() const
 {
     QSet<Note> result;
-    for (int i = 0; i < (int) Note::Count; ++i) {
+    for (int i = 0; i < (int) Note::Pitch::Count; ++i) {
         if (checkBoxes_[i]->isChecked())
-            result.insert((Note)i);
+            result.insert(Note((Note::Pitch)i, /* octave */ 4));
     }
     return result;
 }

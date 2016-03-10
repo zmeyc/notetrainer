@@ -27,7 +27,7 @@ public slots:
 protected:
     QImage noteImage() const;
 
-    Note note_ = Note::C;
+    Note note_;
     QImage filledNoteImage_;
     QImage hollowNoteImage_;
 };

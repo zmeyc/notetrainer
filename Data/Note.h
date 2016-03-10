@@ -5,26 +5,46 @@
 
 #include <QString>
 
-enum class Note {
-    C = 0,
-    Cis,
-    D,
-    Ees,
-    E,
-    F,
-    Fis,
-    G,
-    Aes,
-    A,
-    Bes,
-    B,
+class Note {
+public:
+    enum class Pitch {
+        C = 0,
+        Cis,
+        D,
+        Ees,
+        E,
+        F,
+        Fis,
+        G,
+        Aes,
+        A,
+        Bes,
+        B,
 
-    Count
+        Count
+    };
+
+    Note(Pitch pitch = Pitch::C, int octave = 4);
+
+    static Note noteFromKey(int key);
+
+    static QString pitchName(Pitch pitch);
+    QString pitchName() const;
+    bool isFilled() const;
+
+    Pitch pitch() const;
+    void setPitch(const Pitch &pitch);
+
+    int octave() const;
+    void setOctave(int octave);
+
+    bool operator== (const Note &other) const;
+
+protected:
+    Pitch pitch_ = Pitch::C;
+    int octave_ = 4;
 };
 
-QString noteName(Note note);
-bool isFilled(Note note);
-Note noteFromKey(int key);
 uint qHash(Note note);
 
 #endif // NOTE_H

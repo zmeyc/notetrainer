@@ -6,7 +6,8 @@
 #include "NoteGraphicsItem.h"
 #include "Utils/Utils.h"
 
-const int staffWidth = 200;
+const int staffExtraWidth = 100;
+const int noteHorizontalInterval = 40;
 const int ledgerInterval = 20;
 const int octaveHeight = ledgerInterval * 3;
 
@@ -84,6 +85,7 @@ void StaffGraphicsItem::queuePushNote(const Note &note, int group)
     int queueIndex = noteGroupsQueue_.size();
     noteGroupsQueue_.resize(queueIndex + 1);
     addNote(queueIndex, note, group);
+    prepareGeometryChange();
 }
 
 void StaffGraphicsItem::removeNote(int queueIndex, const Note &note, int group)
@@ -114,7 +116,7 @@ void StaffGraphicsItem::removeAllNotes()
 QRectF StaffGraphicsItem::boundingRect() const
 {
     QSize size;
-    size.setWidth(staffWidth);
+    size.setWidth(notesAreaWidth() + staffExtraWidth);
     int octaveCount = toOctave_ - fromOctave_ + 1;
     size.setHeight(octaveCount * ledgerInterval * 3);
     return QRectF(-size.width() / 2, -size.height() / 2,
@@ -161,21 +163,35 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->restore();
 }
 
+int StaffGraphicsItem::notesAreaWidth() const
+{
+    int horizontalIntervalCount = (int)noteGroupsQueue_.size() - 1;
+    if (horizontalIntervalCount < 0)
+        horizontalIntervalCount = 0;
+    return noteHorizontalInterval * horizontalIntervalCount;
+}
+
 void StaffGraphicsItem::updateNotePositions()
 {
     QRectF rect = boundingRect();
 
     int octaveCount = toOctave_ - fromOctave_ + 1;
-    foreach (QGraphicsItem *item, childItems()) {
-        NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
-        if (!noteItem)
-            continue;
-        Note note = noteItem->note();
-        int spacePerNote = octaveHeight / 12;
-        int octaveIndex = octaveCount - (note.octave() - fromOctave_) - 1;
-        int bottomY = rect.y() + contentMargins_.top() +
-                (octaveIndex + 1) * octaveHeight;
-        int atY = bottomY - spacePerNote * (int)note.pitch();
-        noteItem->setPos(rect.center().x(), atY);
+
+    int len = queueLength();
+    int atX = rect.center().x() - notesAreaWidth() / 2;
+    for (int i = 0; i < len; ++i) {
+        NoteGroups &noteGroups = noteGroupsQueue_[i];
+        foreach (const Notes &notes, noteGroups.values()) {
+            foreach (NoteGraphicsItem *noteItem, notes.values()) {
+                Note note = noteItem->note();
+                int spacePerNote = octaveHeight / 12;
+                int octaveIndex = octaveCount - (note.octave() - fromOctave_) - 1;
+                int bottomY = rect.y() + contentMargins_.top() +
+                        (octaveIndex + 1) * octaveHeight;
+                int atY = bottomY - spacePerNote * (int)note.pitch();
+                noteItem->setPos(atX, atY);
+            }
+        }
+        atX += 40;
     }
 }

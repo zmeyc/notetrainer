@@ -40,6 +40,7 @@ protected:
     using NoteGroups = QMap<int, Notes>;
     using Queue = QVector<NoteGroups>;
 
+    int notesAreaWidth() const;
     void updateNotePositions();
 
     Queue noteGroupsQueue_;

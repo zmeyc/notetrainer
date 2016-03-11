@@ -19,7 +19,7 @@ StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
 void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
 {
     if (fromOctave_ != fromOctave || toOctave_ != toOctave)
-        update();
+        prepareGeometryChange();
 
     fromOctave_ = fromOctave;
     toOctave_ = toOctave;

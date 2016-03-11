@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
-#include <QTimer>
 #include "NoteGuess.h"
 #include "Controls/NoteView.h"
 #include "GraphicsItems/StaffGraphicsItem.h"
@@ -41,7 +40,7 @@ NoteGuess::NoteGuess(QWidget *parent) : QWidget(parent)
 
     setLayout(layout);
 
-    QTimer::singleShot(0, this, SLOT(initNoteView()));
+    initNoteView();
 }
 
 QSet<Note> NoteGuess::notes() const

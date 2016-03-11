@@ -10,7 +10,7 @@ StaffSettings::StaffSettings(QWidget *parent) : QWidget(parent)
     QLabel *queueLengthLabel = new QLabel(tr("Preview Queue Length"));
 
     queueLengthSpinBox_ = new QSpinBox;
-    queueLengthSpinBox_->setValue(4);
+    queueLengthSpinBox_->setValue(6);
     queueLengthSpinBox_->setMinimum(1);
     queueLengthSpinBox_->setMaximum(12);
     connect(queueLengthSpinBox_, SIGNAL(valueChanged(int)),

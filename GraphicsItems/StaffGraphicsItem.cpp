@@ -10,6 +10,7 @@ const int staffExtraWidth = 100;
 const int noteHorizontalInterval = 40;
 const int ledgerInterval = 20;
 const int octaveHeight = ledgerInterval * 3;
+const int extraLedgerWidth = 30;
 
 StaffGraphicsItem::StaffGraphicsItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
@@ -143,15 +144,15 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
                                   atY,
                                   rightX,
                                   atY);
-            } else {
-                painter->drawLine(rect.center().x() - 20,
-                                  atY,
-                                  rect.center().x() + 20,
-                                  atY);
-            }
+            } //else {
+//                painter->drawLine(rect.center().x() - 20,
+//                                  atY,
+//                                  rect.center().x() + 20,
+//                                  atY);
+//            }
             atY += ledgerInterval;
         }
-    }
+    }    
     painter->drawLine(leftX,
                       startY,
                       leftX,
@@ -160,6 +161,22 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
                       startY,
                       rightX,
                       atY - ledgerInterval * 2);
+
+    int len = queueLength();
+    int atX = rect.center().x() - notesAreaWidth() / 2;
+    for (int i = 0; i < len; ++i) {
+        atY = startY;
+        for (int o = fromOctave_; o <= toOctave_; ++o) {
+            atY += 2 * ledgerInterval;
+            painter->drawLine(atX - extraLedgerWidth / 2,
+                              atY,
+                              atX + extraLedgerWidth / 2,
+                              atY);
+            atY += ledgerInterval;
+        }
+        atX += noteHorizontalInterval;
+    }
+
     painter->restore();
 }
 
@@ -192,6 +209,6 @@ void StaffGraphicsItem::updateNotePositions()
                 noteItem->setPos(atX, atY);
             }
         }
-        atX += 40;
+        atX += noteHorizontalInterval;
     }
 }

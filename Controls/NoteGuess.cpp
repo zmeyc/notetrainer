@@ -135,7 +135,7 @@ void NoteGuess::randomizeNextNote(bool allowRepeats)
     staff_->removeAllNotes();
 
     QSet<Note> t = notes_;
-    if (!allowRepeats)
+    if (t.size() > 1 && !allowRepeats)
         t.remove(noteToGuess_);
 
     if (t.isEmpty())

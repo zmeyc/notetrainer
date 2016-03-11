@@ -46,7 +46,7 @@ void StaffGraphicsItem::removeNote(const Note &note, int group)
 {
     Notes &notes = noteGroups_[group];
     Notes::iterator i = notes.find(note);
-    if (i != notes.end())
+    if (i == notes.end())
         return;
     NoteGraphicsItem *noteItem = i.value();
     notes.erase(i);

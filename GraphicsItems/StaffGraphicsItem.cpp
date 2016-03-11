@@ -165,8 +165,8 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     int len = queueLength();
     int atX = rect.center().x() - notesAreaWidth() / 2;
     for (int i = 0; i < len; ++i) {
-        atY = startY;
-        for (int o = fromOctave_; o <= toOctave_; ++o) {
+        atY = startY - 3 * ledgerInterval;
+        for (int o = fromOctave_ - 1; o <= toOctave_; ++o) {
             atY += 2 * ledgerInterval;
             painter->drawLine(atX - extraLedgerWidth / 2,
                               atY,

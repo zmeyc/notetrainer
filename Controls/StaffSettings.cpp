@@ -21,6 +21,8 @@ StaffSettings::StaffSettings(QWidget *parent) : QWidget(parent)
     layout->addWidget(queueLengthLabel);
     layout->addWidget(queueLengthSpinBox_, 0, Qt::AlignLeft);
     setLayout(layout);
+
+    onQueueLengthChanged(queueLengthSpinBox_->value());
 }
 
 int StaffSettings::queueLength() const

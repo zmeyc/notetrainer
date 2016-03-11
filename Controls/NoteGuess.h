@@ -47,7 +47,8 @@ protected:
     };
 
     Q_SLOT void initNoteView();
-    void randomizeNextNote(bool allowRepeats);
+    void fillQueueWithNotes();
+    bool randomizeNextNote();
     void correctNotePressed();
     void wrongNotePressed();
 
@@ -61,7 +62,9 @@ protected:
     int queueLength_ = 0;
 
     bool started_ = false;
-    Note noteToGuess_;
+
+    bool hasLastGeneratedNote_ = false;
+    Note lastGeneratedNote_;
 };
 
 #endif // NOTEGUESS_H

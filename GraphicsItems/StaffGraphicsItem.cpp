@@ -25,13 +25,16 @@ void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
     toOctave_ = toOctave;
 }
 
-void StaffGraphicsItem::addNote(const Note &note, int group)
+void StaffGraphicsItem::addNote(int queueIndex, const Note &note, int group)
 {
+    if (queueIndex < 0 || queueIndex >= noteGroupsQueue_.size())
+        return;
     if (fromOctave_ > note.octave())
         return;
     if (toOctave_ < note.octave())
         return;
-    Notes &notes = noteGroups_[group];
+    NoteGroups &noteGroups = noteGroupsQueue_[queueIndex];
+    Notes &notes = noteGroups[group];
     Notes::iterator i = notes.find(note);
     if (i != notes.end())
         return;
@@ -42,9 +45,53 @@ void StaffGraphicsItem::addNote(const Note &note, int group)
     updateNotePositions();
 }
 
-void StaffGraphicsItem::removeNote(const Note &note, int group)
+bool StaffGraphicsItem::hasNote(int queueIndex, const Note &note, int group)
 {
-    Notes &notes = noteGroups_[group];
+    if (queueIndex < 0 || queueIndex >= noteGroupsQueue_.size())
+        return false;
+    if (fromOctave_ > note.octave())
+        return false;
+    if (toOctave_ < note.octave())
+        return false;
+    NoteGroups &noteGroups = noteGroupsQueue_[queueIndex];
+    Notes &notes = noteGroups[group];
+    Notes::iterator i = notes.find(note);
+    if (i == notes.end())
+        return false;
+    return true;
+}
+
+void StaffGraphicsItem::queuePop()
+{
+    if (noteGroupsQueue_.isEmpty())
+        return;
+    NoteGroups &noteGroups = noteGroupsQueue_[0];
+    foreach (const Notes &notes, noteGroups.values()) {
+        foreach (NoteGraphicsItem *noteItem, notes.values()) {
+            scene()->removeItem(noteItem);
+        }
+    }
+    noteGroupsQueue_.remove(0);
+}
+
+int StaffGraphicsItem::queueLength()
+{
+    return noteGroupsQueue_.size();
+}
+
+void StaffGraphicsItem::queuePushNote(const Note &note, int group)
+{
+    int queueIndex = noteGroupsQueue_.size();
+    noteGroupsQueue_.resize(queueIndex + 1);
+    addNote(queueIndex, note, group);
+}
+
+void StaffGraphicsItem::removeNote(int queueIndex, const Note &note, int group)
+{
+    if (queueIndex < 0 || queueIndex >= noteGroupsQueue_.size())
+        return;
+    NoteGroups &noteGroups = noteGroupsQueue_[queueIndex];
+    Notes &notes = noteGroups[group];
     Notes::iterator i = notes.find(note);
     if (i == notes.end())
         return;
@@ -61,7 +108,7 @@ void StaffGraphicsItem::removeAllNotes()
             continue;
         scene()->removeItem(noteItem);
     }
-    noteGroups_.clear();
+    noteGroupsQueue_.clear();
 }
 
 QRectF StaffGraphicsItem::boundingRect() const

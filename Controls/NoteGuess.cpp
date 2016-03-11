@@ -100,19 +100,20 @@ void NoteGuess::onNoteOn(int key, int velocity)
 {
     Q_UNUSED(velocity);
     Note note = Note::noteFromKey(key);
-    staff_->addNote(note, GroupUserInput);
+    staff_->addNote(0, note, GroupUserInput);
 }
 
 void NoteGuess::onNoteOff(int key, int velocity)
 {
     Q_UNUSED(velocity);
     Note note = Note::noteFromKey(key);
-    staff_->removeNote(note, GroupUserInput);
+    staff_->removeNote(0, note, GroupUserInput);
 
     if (started_) {
-        if (noteToGuess_ == note) {
+        if (staff_->hasNote(0, note, GroupMain)) {
+            staff_->queuePop();
             correctNotePressed();
-            randomizeNextNote(false);
+            fillQueueWithNotes();
         } else {
             wrongNotePressed();
         }
@@ -136,21 +137,29 @@ void NoteGuess::initNoteView()
     //    staff->addNote(Note::F, 0);
 }
 
-void NoteGuess::randomizeNextNote(bool allowRepeats)
+void NoteGuess::fillQueueWithNotes()
 {
-    staff_->removeAllNotes();
+    qerr << "_bp0 " << staff_->queueLength() <<","<<queueLength_<< endl;
+    while (staff_->queueLength() < queueLength_) {
+        if (!randomizeNextNote())
+            return;
+    }
+}
 
+bool NoteGuess::randomizeNextNote()
+{
     QSet<Note> t = notes_;
-    if (t.size() > 1 && !allowRepeats)
-        t.remove(noteToGuess_);
+    if (t.size() > 1 && hasLastGeneratedNote_)
+        t.remove(lastGeneratedNote_);
 
     if (t.isEmpty())
-        return;
+        return false;
 
     Note note = t.toList().at(qrand() % t.size());
 
-    staff_->addNote(note, GroupMain);
-    noteToGuess_ = note;
+    staff_->queuePushNote(note, GroupMain);
+    lastGeneratedNote_ = note;
+    return true;
 }
 
 void NoteGuess::correctNotePressed()
@@ -172,6 +181,8 @@ void NoteGuess::start()
     correctLineEdit_->setText("0");
     wrongLineEdit_->setText("0");
     staff_->setOctaveRange(octaveFrom_, octaveTo_);
-    randomizeNextNote(true);
+    hasLastGeneratedNote_ = false;
+    staff_->removeAllNotes();
+    fillQueueWithNotes();
     started_ = true;
 }

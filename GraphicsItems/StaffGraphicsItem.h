@@ -20,8 +20,12 @@ public:
     explicit StaffGraphicsItem(QGraphicsItem *parent = nullptr);
 
     void setOctaveRange(int fromOctave, int toOctave);
-    void addNote(const Note &note, int group);
-    void removeNote(const Note &note, int group);
+    void addNote(int queueIndex, const Note &note, int group);
+    bool hasNote(int queueIndex, const Note &note, int group);
+    void queuePop();
+    int queueLength();
+    void queuePushNote(const Note &note, int group);
+    void removeNote(int queueIndex, const Note &note, int group);
     void removeAllNotes();
 
     QRectF boundingRect() const override;
@@ -33,11 +37,12 @@ public slots:
 
 protected:
     using Notes = QMap<Note, NoteGraphicsItem *>;
-    using NoteGroup = QMap<int, Notes>;
+    using NoteGroups = QMap<int, Notes>;
+    using Queue = QVector<NoteGroups>;
 
     void updateNotePositions();
 
-    NoteGroup noteGroups_;
+    Queue noteGroupsQueue_;
     QMargins contentMargins_;
     int fromOctave_ = 0;
     int toOctave_ = 0;

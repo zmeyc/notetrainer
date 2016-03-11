@@ -139,7 +139,6 @@ void NoteGuess::initNoteView()
 
 void NoteGuess::fillQueueWithNotes()
 {
-    qerr << "_bp0 " << staff_->queueLength() <<","<<queueLength_<< endl;
     while (staff_->queueLength() < queueLength_) {
         if (!randomizeNextNote())
             return;
@@ -159,6 +158,7 @@ bool NoteGuess::randomizeNextNote()
 
     staff_->queuePushNote(note, GroupMain);
     lastGeneratedNote_ = note;
+    hasLastGeneratedNote_ = true;
     return true;
 }
 

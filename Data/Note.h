@@ -4,6 +4,7 @@
 #define NOTE_H
 
 #include <QString>
+#include <QTextStream>
 
 class Note {
 public:
@@ -47,5 +48,7 @@ protected:
 };
 
 uint qHash(Note note);
+
+QTextStream &operator<<(QTextStream &s, const Note &note);
 
 #endif // NOTE_H

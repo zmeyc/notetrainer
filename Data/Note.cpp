@@ -96,3 +96,8 @@ uint qHash(Note note)
     return ::qHash((int)note.pitch()) ^ ::qHash(note.octave());
 }
 
+
+QTextStream &operator<<(QTextStream &s, const Note &note)
+{
+    return s << "{ octave: " << (int)note.octave() << ", pitch: " << (int)note.pitch() << " }";
+}

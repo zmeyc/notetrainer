@@ -22,6 +22,7 @@ public:
     void setOctaveRange(int fromOctave, int toOctave);
     void addNote(int queueIndex, const Note &note, int group);
     bool hasNote(int queueIndex, const Note &note, int group);
+    bool hasNote(int queueIndex, const Note &note);
     void queuePop();
     int queueLength();
     void queuePushNote(const Note &note, int group);

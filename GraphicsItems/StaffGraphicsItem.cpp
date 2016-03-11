@@ -63,6 +63,23 @@ bool StaffGraphicsItem::hasNote(int queueIndex, const Note &note, int group)
     return true;
 }
 
+bool StaffGraphicsItem::hasNote(int queueIndex, const Note &note)
+{
+    if (queueIndex < 0 || queueIndex >= noteGroupsQueue_.size())
+        return false;
+    if (fromOctave_ > note.octave())
+        return false;
+    if (toOctave_ < note.octave())
+        return false;
+    NoteGroups &noteGroups = noteGroupsQueue_[queueIndex];
+    foreach (const Notes &notes, noteGroups) {
+        Notes::const_iterator i = notes.find(note);
+        if (i != notes.end())
+            return true;
+    }
+    return false;
+}
+
 void StaffGraphicsItem::queuePop()
 {
     if (noteGroupsQueue_.isEmpty())
@@ -164,14 +181,21 @@ void StaffGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 
     int len = queueLength();
     int atX = rect.center().x() - notesAreaWidth() / 2;
-    for (int i = 0; i < len; ++i) {
+    for (int queueIndex = 0; queueIndex < len; ++queueIndex) {
         atY = startY - 3 * ledgerInterval;
-        for (int o = fromOctave_ - 1; o <= toOctave_; ++o) {
+        for (int octave = toOctave_ + 1; octave >= fromOctave_; --octave) {
             atY += 2 * ledgerInterval;
-            painter->drawLine(atX - extraLedgerWidth / 2,
-                              atY,
-                              atX + extraLedgerWidth / 2,
-                              atY);
+            Note noteCis(Note::Pitch::Cis, octave);
+            Note noteC(Note::Pitch::C, octave);
+            Note noteB(Note::Pitch::B, octave - 1);
+            if (hasNote(queueIndex, noteCis) ||
+                    hasNote(queueIndex, noteC) ||
+                    hasNote(queueIndex, noteB)) {
+                painter->drawLine(atX - extraLedgerWidth / 2,
+                                  atY,
+                                  atX + extraLedgerWidth / 2,
+                                  atY);
+            }
             atY += ledgerInterval;
         }
         atX += noteHorizontalInterval;

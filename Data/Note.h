@@ -39,6 +39,7 @@ public:
     void setOctave(int octave);
 
     bool operator== (const Note &other) const;
+    bool operator< (const Note &other) const;
 
 protected:
     Pitch pitch_ = Pitch::C;

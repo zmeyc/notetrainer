@@ -25,27 +25,32 @@ void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
     toOctave_ = toOctave;
 }
 
-void StaffGraphicsItem::addNote(const Note &note)
+void StaffGraphicsItem::addNote(const Note &note, int group)
 {
     if (fromOctave_ > note.octave())
         return;
     if (toOctave_ < note.octave())
         return;
+    Notes &notes = noteGroups_[group];
+    Notes::iterator i = notes.find(note);
+    if (i != notes.end())
+        return;
     NoteGraphicsItem *noteItem = new NoteGraphicsItem;
+    notes[note] = noteItem;
     noteItem->setNote(note);
     noteItem->setParentItem(this);
     updateNotePositions();
 }
 
-void StaffGraphicsItem::removeNote(const Note &note)
+void StaffGraphicsItem::removeNote(const Note &note, int group)
 {
-    foreach (QGraphicsItem *item, childItems()) {
-        NoteGraphicsItem *noteItem = dynamic_cast<NoteGraphicsItem *>(item);
-        if (!noteItem)
-            continue;
-        if (noteItem->note() == note)
-            scene()->removeItem(noteItem);
-    }
+    Notes &notes = noteGroups_[group];
+    Notes::iterator i = notes.find(note);
+    if (i != notes.end())
+        return;
+    NoteGraphicsItem *noteItem = i.value();
+    notes.erase(i);
+    scene()->removeItem(noteItem);
 }
 
 void StaffGraphicsItem::removeAllNotes()
@@ -56,6 +61,7 @@ void StaffGraphicsItem::removeAllNotes()
             continue;
         scene()->removeItem(noteItem);
     }
+    noteGroups_.clear();
 }
 
 QRectF StaffGraphicsItem::boundingRect() const

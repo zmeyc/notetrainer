@@ -38,6 +38,11 @@ protected slots:
     void onNoteOff(int key, int velocity);
 
 protected:
+    enum {
+        GroupMain,
+        GroupUserInput
+    };
+
     Q_SLOT void initNoteView();
     void randomizeNextNote(bool allowRepeats);
     void correctNotePressed();

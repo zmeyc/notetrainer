@@ -94,14 +94,14 @@ void NoteGuess::onNoteOn(int key, int velocity)
 {
     Q_UNUSED(velocity);
     Note note = Note::noteFromKey(key);
-    staff_->addNote(note);
+    staff_->addNote(note, GroupUserInput);
 }
 
 void NoteGuess::onNoteOff(int key, int velocity)
 {
     Q_UNUSED(velocity);
     Note note = Note::noteFromKey(key);
-    staff_->removeNote(note);
+    staff_->removeNote(note, GroupUserInput);
 
     if (started_) {
         if (noteToGuess_ == note) {
@@ -143,7 +143,7 @@ void NoteGuess::randomizeNextNote(bool allowRepeats)
 
     Note note = t.toList().at(qrand() % t.size());
 
-    staff_->addNote(note);
+    staff_->addNote(note, GroupMain);
     noteToGuess_ = note;
 }
 

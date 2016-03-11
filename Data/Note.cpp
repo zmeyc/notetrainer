@@ -85,6 +85,12 @@ bool Note::operator==(const Note &other) const
     return pitch_ == other.pitch_ && octave_ == other.octave_;
 }
 
+bool Note::operator<(const Note &other) const
+{
+    return octave_ < other.octave_ ||
+            (octave_ == other.octave_ && pitch_ < other.pitch_);
+}
+
 uint qHash(Note note)
 {
     return ::qHash((int)note.pitch()) ^ ::qHash(note.octave());

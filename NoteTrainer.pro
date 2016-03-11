@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     Utils/Utils.cpp \
     GraphicsItems/NoteGraphicsItem.cpp \
     ThirdParty/rtmidi/RtMidi.cpp \
-    Controllers/MidiReader.cpp
+    Controllers/MidiReader.cpp \
+    Controls/StaffSettings.cpp
 
 HEADERS  += MainWindow.h \
     Utils/WidgetUtils.h \
@@ -41,7 +42,8 @@ HEADERS  += MainWindow.h \
     Utils/Utils.h \
     GraphicsItems/NoteGraphicsItem.h \
     ThirdParty/rtmidi/RtMidi.h \
-    Controllers/MidiReader.h
+    Controllers/MidiReader.h \
+    Controls/StaffSettings.h
 
 RESOURCES += \
     NoteTrainer.qrc

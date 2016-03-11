@@ -4,7 +4,9 @@
 #include <QLabel>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QVBoxLayout>
 #include "MainWindow.h"
+#include "Controls/StaffSettings.h"
 #include "Controls/NoteSelector.h"
 #include "Controls/NoteGuess.h"
 #include "Controllers/MidiReader.h"
@@ -14,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     resize(QDesktopWidget().availableGeometry(this).size() * 0.7);
 
+    staffSettings_ = new StaffSettings;
+
     QSplitter *splitter = new QSplitter;
     splitter->setContentsMargins(10, 10, 10, 10);
 
@@ -22,7 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(noteGuess_, SIGNAL(reset()),
             this, SLOT(onReset()));
 
-    splitter->addWidget(noteSelector_);
+    QVBoxLayout *leftPanelLayout = new QVBoxLayout;
+    leftPanelLayout->addWidget(staffSettings_);
+    leftPanelLayout->addWidget(noteSelector_);
+    leftPanelLayout->addStretch(1);
+    QWidget *leftPanel = new QWidget;
+    leftPanel->setLayout(leftPanelLayout);
+
+    splitter->addWidget(leftPanel);
     splitter->addWidget(noteGuess_);
 
     setCentralWidget(splitter);
@@ -51,6 +62,7 @@ void MainWindow::onReset()
     QSet<Note> notes = noteSelector_->notes();
     noteGuess_->setOctaveFrom(noteSelector_->octaveFrom());
     noteGuess_->setOctaveTo(noteSelector_->octaveTo());
+    noteGuess_->setQueueLength(staffSettings_->queueLength());
     noteGuess_->setNotes(notes);
     noteGuess_->start();
 }

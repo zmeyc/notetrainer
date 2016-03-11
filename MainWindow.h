@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 
+class StaffSettings;
 class NoteSelector;
 class NoteGuess;
 
@@ -20,6 +21,7 @@ protected slots:
     void onReset();
 
 protected:
+    StaffSettings *staffSettings_ = nullptr;
     NoteSelector *noteSelector_ = nullptr;
     NoteGuess *noteGuess_ = nullptr;
 };

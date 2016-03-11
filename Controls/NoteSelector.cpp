@@ -10,24 +10,26 @@
 
 NoteSelector::NoteSelector(QWidget *parent) : QWidget(parent)
 {
-    octaveFromCheckBox_ = new QSpinBox;
-    octaveFromCheckBox_->setValue(3);
-    octaveFromCheckBox_->setMinimum(-1);
-    octaveFromCheckBox_->setMaximum(8);
-    connect(octaveFromCheckBox_, SIGNAL(valueChanged(int)),
+    QLabel *octaveRangeLabel = new QLabel(tr("Octave Range"));
+
+    octaveFromSpinBox_ = new QSpinBox;
+    octaveFromSpinBox_->setValue(3);
+    octaveFromSpinBox_->setMinimum(-1);
+    octaveFromSpinBox_->setMaximum(8);
+    connect(octaveFromSpinBox_, SIGNAL(valueChanged(int)),
             this, SLOT(onOctaveFromChanged(int)));
 
-    octaveToCheckBox_ = new QSpinBox;
-    octaveToCheckBox_->setValue(5);
-    octaveToCheckBox_->setMinimum(-1);
-    octaveToCheckBox_->setMaximum(8);
-    connect(octaveToCheckBox_, SIGNAL(valueChanged(int)),
+    octaveToSpinBox_ = new QSpinBox;
+    octaveToSpinBox_->setValue(5);
+    octaveToSpinBox_->setMinimum(-1);
+    octaveToSpinBox_->setMaximum(8);
+    connect(octaveToSpinBox_, SIGNAL(valueChanged(int)),
             this, SLOT(onOctaveToChanged(int)));
 
     QHBoxLayout *octaveSelectionLayout = new QHBoxLayout;
     octaveSelectionLayout->setContentsMargins(0, 0, 0, 0);
-    octaveSelectionLayout->addWidget(octaveFromCheckBox_);
-    octaveSelectionLayout->addWidget(octaveToCheckBox_);
+    octaveSelectionLayout->addWidget(octaveFromSpinBox_);
+    octaveSelectionLayout->addWidget(octaveToSpinBox_);
     octaveSelectionLayout->addStretch(1);
 
     octavesLabel_ = new QLabel;
@@ -41,6 +43,7 @@ NoteSelector::NoteSelector(QWidget *parent) : QWidget(parent)
     layout->setContentsMargins(0, 0, 0, 0);
 
     layout->addStretch(1);
+    layout->addWidget(octaveRangeLabel);
     layout->addLayout(octaveSelectionLayout);
     layout->addWidget(octavesLabel_);
     layout->addLayout(checkBoxesLayout_);
@@ -65,14 +68,12 @@ QSet<Note> NoteSelector::notes() const
 
 void NoteSelector::updateOctaves()
 {
-    octaveFrom_ = octaveFromCheckBox_->value();
-    octaveTo_ = octaveToCheckBox_->value();
+    octaveFrom_ = octaveFromSpinBox_->value();
+    octaveTo_ = octaveToSpinBox_->value();
     if (octaveFrom_ > octaveTo_)
         octaveFrom_ = octaveTo_;
     octaveCount_ = octaveTo_ - octaveFrom_ + 1;
-    octavesLabel_->setText(tr("Octave range: [%1, %2], %3 octave%4.")
-                           .arg(octaveFrom_)
-                           .arg(octaveTo_)
+    octavesLabel_->setText(tr("%1 octave%2. Select notes:")
                            .arg(octaveCount_)
                            .arg(octaveCount_ == 1 ? "" : "s"));
     updateCheckboxes();

@@ -40,8 +40,8 @@ protected:
     void updateCheckboxes();
 
     QGridLayout *checkBoxesLayout_ = nullptr;
-    QSpinBox *octaveFromCheckBox_ = nullptr;
-    QSpinBox *octaveToCheckBox_ = nullptr;
+    QSpinBox *octaveFromSpinBox_ = nullptr;
+    QSpinBox *octaveToSpinBox_ = nullptr;
     QLabel *octavesLabel_ = nullptr;
     QMap<int, OctaveCheckBoxes> checkBoxes_;
     int octaveFrom_ = 0;

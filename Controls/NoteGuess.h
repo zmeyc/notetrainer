@@ -26,6 +26,9 @@ public:
     int octaveTo() const;
     void setOctaveTo(int octaveTo);
 
+    int queueLength() const;
+    void setQueueLength(int queueLength);
+
     void start();
 
 signals:
@@ -55,6 +58,7 @@ protected:
     QSet<Note> notes_;
     int octaveFrom_ = 0;
     int octaveTo_ = 0;
+    int queueLength_ = 0;
 
     bool started_ = false;
     Note noteToGuess_;

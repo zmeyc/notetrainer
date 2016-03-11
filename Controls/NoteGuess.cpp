@@ -73,8 +73,6 @@ int NoteGuess::octaveFrom() const
 
 void NoteGuess::setOctaveFrom(int octaveFrom)
 {
-    if (octaveFrom_ != octaveFrom)
-        update();
     octaveFrom_ = octaveFrom;
 }
 
@@ -85,9 +83,17 @@ int NoteGuess::octaveTo() const
 
 void NoteGuess::setOctaveTo(int octaveTo)
 {
-    if (octaveTo_ != octaveTo)
-        update();
     octaveTo_ = octaveTo;
+}
+
+int NoteGuess::queueLength() const
+{
+    return queueLength_;
+}
+
+void NoteGuess::setQueueLength(int queueLength)
+{
+    queueLength_ = queueLength;
 }
 
 void NoteGuess::onNoteOn(int key, int velocity)

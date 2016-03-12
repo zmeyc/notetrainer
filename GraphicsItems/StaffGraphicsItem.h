@@ -20,6 +20,8 @@ public:
     explicit StaffGraphicsItem(QGraphicsItem *parent = nullptr);
 
     void setOctaveRange(int fromOctave, int toOctave);
+    bool showNoteNames() const;
+    void setShowNoteNames(bool showNoteNames);
     void addNote(int queueIndex, const Note &note, int group);
     bool hasNote(int queueIndex, const Note &note, int group);
     bool hasNote(int queueIndex, const Note &note);
@@ -32,6 +34,7 @@ public:
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
+
 signals:
 
 public slots:
@@ -48,6 +51,7 @@ protected:
     QMargins contentMargins_;
     int fromOctave_ = 0;
     int toOctave_ = 0;
+    bool showNoteNames_ = true;
 };
 
 #endif // STAFFGRAPHICSITEM_H

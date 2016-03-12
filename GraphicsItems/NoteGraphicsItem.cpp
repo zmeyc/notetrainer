@@ -1,5 +1,6 @@
 #include <QPainter>
 #include "NoteGraphicsItem.h"
+#include "StaffGraphicsItem.h"
 #include "Utils/Utils.h"
 
 #define DEBUG_DRAW 0
@@ -41,9 +42,11 @@ void NoteGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QRectF rect = boundingRect();
     QImage image = noteImage();
     painter->drawImage(rect.translated(0, 0).topLeft(), image);
-    painter->drawText(rect.bottomRight().x() + 2,
-                      rect.bottomRight().y() - 3,
-                      note_.pitchName());
+    if (showNoteNames()) {
+        painter->drawText(rect.bottomRight().x() + 2,
+                          rect.bottomRight().y() - 3,
+                          note_.pitchName());
+    }
 
 #if DEBUG_DRAW
     painter->save();
@@ -61,4 +64,12 @@ QImage NoteGraphicsItem::noteImage() const
     else
         image = hollowNoteImage_;
     return image;
+}
+
+bool NoteGraphicsItem::showNoteNames() const
+{
+    StaffGraphicsItem *staff = dynamic_cast<StaffGraphicsItem *>(parentItem());
+    if (staff && staff->showNoteNames())
+        return true;
+    return false;
 }

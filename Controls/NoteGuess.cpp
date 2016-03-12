@@ -96,6 +96,16 @@ void NoteGuess::setQueueLength(int queueLength)
     queueLength_ = queueLength;
 }
 
+int NoteGuess::showNoteNames() const
+{
+    return showNoteNames_;
+}
+
+void NoteGuess::setShowNoteNames(int showNoteNames)
+{
+    showNoteNames_ = showNoteNames;
+}
+
 void NoteGuess::onNoteOn(int key, int velocity)
 {
     Q_UNUSED(velocity);
@@ -181,6 +191,7 @@ void NoteGuess::start()
     correctLineEdit_->setText("0");
     wrongLineEdit_->setText("0");
     staff_->setOctaveRange(octaveFrom_, octaveTo_);
+    staff_->setShowNoteNames(showNoteNames_);
     hasLastGeneratedNote_ = false;
     staff_->removeAllNotes();
     fillQueueWithNotes();

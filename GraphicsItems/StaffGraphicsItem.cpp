@@ -27,6 +27,16 @@ void StaffGraphicsItem::setOctaveRange(int fromOctave, int toOctave)
     toOctave_ = toOctave;
 }
 
+bool StaffGraphicsItem::showNoteNames() const
+{
+    return showNoteNames_;
+}
+
+void StaffGraphicsItem::setShowNoteNames(bool showNoteNames)
+{
+    showNoteNames_ = showNoteNames;
+}
+
 void StaffGraphicsItem::addNote(int queueIndex, const Note &note, int group)
 {
     if (queueIndex < 0 || queueIndex >= noteGroupsQueue_.size())

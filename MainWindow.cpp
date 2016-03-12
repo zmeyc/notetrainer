@@ -63,6 +63,7 @@ void MainWindow::onReset()
     noteGuess_->setOctaveFrom(noteSelector_->octaveFrom());
     noteGuess_->setOctaveTo(noteSelector_->octaveTo());
     noteGuess_->setQueueLength(staffSettings_->queueLength());
+    noteGuess_->setShowNoteNames(staffSettings_->showNoteNames());
     noteGuess_->setNotes(notes);
     noteGuess_->start();
 }

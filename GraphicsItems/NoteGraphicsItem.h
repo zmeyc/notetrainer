@@ -26,6 +26,7 @@ public slots:
 
 protected:
     QImage noteImage() const;
+    bool showNoteNames() const;
 
     Note note_;
     QImage filledNoteImage_;

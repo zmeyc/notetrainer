@@ -29,6 +29,9 @@ public:
     int queueLength() const;
     void setQueueLength(int queueLength);
 
+    int showNoteNames() const;
+    void setShowNoteNames(int showNoteNames);
+
     void start();
 
 signals:
@@ -60,6 +63,7 @@ protected:
     int octaveFrom_ = 0;
     int octaveTo_ = 0;
     int queueLength_ = 0;
+    int showNoteNames_ = true;
 
     bool started_ = false;
 

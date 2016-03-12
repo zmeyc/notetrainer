@@ -1,6 +1,6 @@
 // NoteTrainer (c) 2016 Andrey Fidrya. MIT license. See LICENSE for more information.
 
-#include <QHashFunctions>
+#include <QHash>
 #include "Note.h"
 #include "Utils/Utils.h"
 

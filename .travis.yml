@@ -1,0 +1,17 @@
+branches:
+  only:
+    - master
+
+
+language: c++
+
+os:
+  - osx
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./install-osx-dependencies.sh ; fi
+
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then qmake -r -spec macx-clang CONFIG+=x86_64 CONFIG+=release ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then make ; fi
+

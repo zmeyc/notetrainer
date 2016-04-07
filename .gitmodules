@@ -1,3 +1,6 @@
 [submodule "ThirdParty/rtmidi"]
 	path = ThirdParty/rtmidi
 	url = https://github.com/zmeyc/rtmidi.git
+[submodule "ThirdParty/create-dmg"]
+	path = ThirdParty/create-dmg
+	url = https://github.com/zmeyc/create-dmg.git

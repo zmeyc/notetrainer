@@ -110,10 +110,10 @@ int StaffGraphicsItem::queueLength()
 
 void StaffGraphicsItem::queuePushNote(const Note &note, int group)
 {
+    prepareGeometryChange();
     int queueIndex = noteGroupsQueue_.size();
     noteGroupsQueue_.resize(queueIndex + 1);
     addNote(queueIndex, note, group);
-    prepareGeometryChange();
 }
 
 void StaffGraphicsItem::removeNote(int queueIndex, const Note &note, int group)
